@@ -33,10 +33,10 @@ export const Autoloader = (config: AutoloaderConfig) => {
 const TypeDefLoader = async ({ path, conventions, fileExtensions }: AutoloaderConfig): Promise<DocumentNode> => {
   const filesOfConvetion = getFilesOfConventions(path, conventions!.types!, fileExtensions!)
   const typeDefs = await getImports(filesOfConvetion)
-  return typeDefs.reduce<DocumentNode>((curr, next) => gql`
+  return typeDefs.reduce((curr, next): DocumentNode => gql`
     ${curr}
     ${next}
-  `, gql``)
+  `, '')
 }
 
 const ResolverLoader = async ({ path, conventions, fileExtensions }: AutoloaderConfig) => {

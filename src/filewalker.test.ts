@@ -49,7 +49,7 @@ describe('filewalker', () => {
     }
   }
   it('returns expected schema files', () => {
-    expect(getFilesOfConventions('../.testdata', defaultConfig.conventions!.types!, mockFileExtensions)).toEqual(expectedOutputSchemaFiles)
+    expect(getFilesOfConventions(path.resolve(__dirname, '..', '.testdata'), defaultConfig.conventions!.types!, mockFileExtensions)).toEqual(expectedOutputSchemaFiles)
   })
 
   it('returns expected resolver files', () => {

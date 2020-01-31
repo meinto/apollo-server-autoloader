@@ -1,1 +1,2 @@
-console.log('test')
+import { Autoloader } from './autoloader'
+export { Autoloader }
