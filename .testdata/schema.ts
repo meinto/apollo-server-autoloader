@@ -1,0 +1,1 @@
+export const typeDef = 'schema.ts'

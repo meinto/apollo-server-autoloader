@@ -8,10 +8,10 @@ import { getFilesOfConventions, FilesOfConvention } from './filewalker'
 interface AutoloaderConfig {
   path: string
   conventions?: FileNamingConventions
-  fileExtensions: string[]
+  fileExtensions?: string[]
 }
 
-const defaultConfig: AutoloaderConfig = {
+export const defaultConfig: AutoloaderConfig = {
   path: '.',
   conventions: {
     types: { schema: 'typeDef' },
@@ -31,7 +31,7 @@ export const Autoloader = (config: AutoloaderConfig) => {
 }
 
 const TypeDefLoader = async ({ path, conventions, fileExtensions }: AutoloaderConfig): Promise<DocumentNode> => {
-  const filesOfConvetion = getFilesOfConventions(path, conventions!.types!, fileExtensions)
+  const filesOfConvetion = getFilesOfConventions(path, conventions!.types!, fileExtensions!)
   const typeDefs = await getImports(filesOfConvetion)
   return typeDefs.reduce<DocumentNode>((curr, next) => gql`
     ${curr}
@@ -40,14 +40,14 @@ const TypeDefLoader = async ({ path, conventions, fileExtensions }: AutoloaderCo
 }
 
 const ResolverLoader = async ({ path, conventions, fileExtensions }: AutoloaderConfig) => {
-  const filesOfConvetion = getFilesOfConventions(path, conventions!.resolvers!, fileExtensions)
+  const filesOfConvetion = getFilesOfConventions(path, conventions!.resolvers!, fileExtensions!)
   const resolvers = await getImports(filesOfConvetion)
   return resolvers.reduce((curr, next) => {
     return _.merge(curr, next)
   }, {})
 }
 const DatasourceLoader = async ({ path, conventions, fileExtensions }: AutoloaderConfig) => {
-  const filesOfConvetion = getFilesOfConventions(path, conventions!.datasources!, fileExtensions)
+  const filesOfConvetion = getFilesOfConventions(path, conventions!.datasources!, fileExtensions!)
   const datasources = await getImports(filesOfConvetion)
   return () => datasources.reduce((curr, next) => {
     return {
@@ -57,16 +57,16 @@ const DatasourceLoader = async ({ path, conventions, fileExtensions }: Autoloade
   }, {})
 }
 
-const getImports = async (filesOfConvention: FilesOfConvention): Promise<any[]> => {
+export const getImports = async (filesOfConvention: FilesOfConvention): Promise<any[]> => {
   let imports: any[] = []
   const fileNamePatterns = Object.keys(filesOfConvention)
   for (let i = 0; i < fileNamePatterns.length; i++) {
     const filePattern = fileNamePatterns[i]
     const matchingFiles = filesOfConvention[filePattern]
     const matchingConvention = matchingFiles.convention
-    const importOfConvetion = await Promise.all(matchingFiles.files
-      .map((path: string) => import(path))
-      .map((module: any) => module[matchingConvention[filePattern]]))
+    const exportPattern = matchingConvention[filePattern]
+    const modules = await Promise.all(matchingFiles.files.map((path: string) => import(path)))
+    const importOfConvetion = modules.map((module: any) => module[exportPattern])
     imports = imports.concat(importOfConvetion)
   }
   return imports

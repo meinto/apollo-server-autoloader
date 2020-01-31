@@ -1,0 +1,1 @@
+export const mutations = 'subfolder1/mutations.ts'
