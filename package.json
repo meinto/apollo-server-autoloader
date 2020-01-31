@@ -3,8 +3,9 @@
   "version": "1.0.4",
   "description": "auto loading schemas, resolvers and datasources",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --declaration",
     "test": "jest"
   },
   "repository": {
