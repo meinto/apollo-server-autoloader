@@ -60,11 +60,11 @@ interface FileNamingConventions {
 }
 
 interface NamingConvention {
-  // The key is the pattern for the file name
+  // The "key" is the pattern for the file name
   // The ExportPattern is the pattern for the export variable
   //  If your schemas for example are located in files
   // which are named "schema.ts" and they provide an export 
-  // variable named "typeDef" the naming conventions would look like:
+  // variable named "typeDef" the naming convention would look like follows:
   // { schema: 'typeDef' }
   [key: string]: ExportPattern
 }
@@ -98,7 +98,7 @@ export const myMutations = { ... }
 export class MyDatasource { ... }
 ```
 
-The corresponding config for the autoloader should look like follows:
+In this case the corresponding config for the autoloader should look like follows:
 
 ```js
 const config = {
