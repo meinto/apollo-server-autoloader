@@ -20,7 +20,7 @@ import { buildFederatedSchema } from '@apollo/federation'
 import { ApolloServer } from '...'
 import { Autoloader } from 'apollo-server-autoloader'
 
-const autoloaderConfig:  = {
+const autoloaderConfig = {
   path: path.resolve(__dirname, 'api')
 }
 
