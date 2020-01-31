@@ -1,0 +1,40 @@
+{
+  "name": "apollo-server-autoloader",
+  "version": "1.0.0",
+  "description": "auto loading schemas, resolvers and datasources",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meinto/apollo-server-autoloader.git"
+  },
+  "keywords": [
+    "apollo",
+    "apollo-server",
+    "autoloader",
+    "graphql",
+    "gql"
+  ],
+  "author": "Tobias Meinhardt",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/meinto/apollo-server-autoloader/issues"
+  },
+  "homepage": "https://github.com/meinto/apollo-server-autoloader#readme",
+  "devDependencies": {
+    "@types/lodash": "^4.14.149",
+    "@typescript-eslint/eslint-plugin": "^2.18.0",
+    "@typescript-eslint/parser": "^2.18.0",
+    "apollo-server": "^2.9.16",
+    "eslint": "^6.8.0",
+    "graphql": "^14.6.0",
+    "lodash": "^4.17.15",
+    "typescript": "^3.7.5"
+  },
+  "dependencies": {
+    "@types/node": "^13.5.3"
+  }
+}
