@@ -9,6 +9,7 @@ interface AutoloaderConfig {
   path: string
   conventions?: FileNamingConventions
   fileExtensions?: string[]
+  exclude?: string[],
 }
 
 export const defaultConfig: AutoloaderConfig = {
@@ -18,7 +19,8 @@ export const defaultConfig: AutoloaderConfig = {
     resolvers: { queries: 'queries', mutations: 'mutations' },
     datasources: { Datasource: 'Datasource' },
   },
-  fileExtensions: ['ts']
+  fileExtensions: ['ts'],
+  exclude: ['[^\/]+\.(spec|test)', '__tests__'], // eslint-disable-line
 }
 
 export const Autoloader = (config: AutoloaderConfig) => {
@@ -30,8 +32,8 @@ export const Autoloader = (config: AutoloaderConfig) => {
   }
 }
 
-const TypeDefLoader = async ({ path, conventions, fileExtensions }: AutoloaderConfig): Promise<DocumentNode> => {
-  const filesOfConvetion = getFilesOfConventions(path, conventions!.types!, fileExtensions!)
+const TypeDefLoader = async ({ path, conventions, fileExtensions, exclude }: AutoloaderConfig): Promise<DocumentNode> => {
+  const filesOfConvetion = getFilesOfConventions(path, conventions!.types!, fileExtensions!, exclude!)
   const typeDefs = await getImports(filesOfConvetion)
   return typeDefs.reduce((curr, next): DocumentNode => gql`
     ${curr}
@@ -39,15 +41,15 @@ const TypeDefLoader = async ({ path, conventions, fileExtensions }: AutoloaderCo
   `, '')
 }
 
-const ResolverLoader = async ({ path, conventions, fileExtensions }: AutoloaderConfig) => {
-  const filesOfConvetion = getFilesOfConventions(path, conventions!.resolvers!, fileExtensions!)
+const ResolverLoader = async ({ path, conventions, fileExtensions, exclude }: AutoloaderConfig) => {
+  const filesOfConvetion = getFilesOfConventions(path, conventions!.resolvers!, fileExtensions!, exclude!)
   const resolvers = await getImports(filesOfConvetion)
   return resolvers.reduce((curr, next) => {
     return _.merge(curr, next)
   }, {})
 }
-const DatasourceLoader = async ({ path, conventions, fileExtensions }: AutoloaderConfig) => {
-  const filesOfConvetion = getFilesOfConventions(path, conventions!.datasources!, fileExtensions!)
+const DatasourceLoader = async ({ path, conventions, fileExtensions, exclude }: AutoloaderConfig) => {
+  const filesOfConvetion = getFilesOfConventions(path, conventions!.datasources!, fileExtensions!, exclude!)
   const datasources = await getImports(filesOfConvetion)
   return () => datasources.reduce((curr, next) => {
     return {

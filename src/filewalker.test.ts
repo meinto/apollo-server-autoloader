@@ -49,15 +49,30 @@ describe('filewalker', () => {
     }
   }
   it('returns expected schema files', () => {
-    expect(getFilesOfConventions(path.resolve(__dirname, '..', '.testdata'), defaultConfig.conventions!.types!, mockFileExtensions)).toEqual(expectedOutputSchemaFiles)
+    expect(getFilesOfConventions(
+      path.resolve(__dirname, '..', '.testdata'), 
+      defaultConfig.conventions!.types!, 
+      mockFileExtensions,
+      defaultConfig.exclude!,
+    )).toEqual(expectedOutputSchemaFiles)
   })
 
   it('returns expected resolver files', () => {
-    expect(getFilesOfConventions('../.testdata', defaultConfig.conventions!.resolvers!, mockFileExtensions)).toEqual(expectedOutputResolverFiles)
+    expect(getFilesOfConventions(
+      '../.testdata', 
+      defaultConfig.conventions!.resolvers!, 
+      mockFileExtensions,
+      defaultConfig.exclude!,
+    )).toEqual(expectedOutputResolverFiles)
   })
 
   it('returns expected datasource files', () => {
-    expect(getFilesOfConventions('../.testdata', defaultConfig.conventions!.datasources!, mockFileExtensions)).toEqual(expectedOutputDatasourceFiles)
+    expect(getFilesOfConventions(
+      '../.testdata', 
+      defaultConfig.conventions!.datasources!, 
+      mockFileExtensions,
+      defaultConfig.exclude!,
+    )).toEqual(expectedOutputDatasourceFiles)
   })
 
 })

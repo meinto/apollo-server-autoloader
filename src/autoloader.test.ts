@@ -1,10 +1,15 @@
 import { getFilesOfConventions } from './filewalker'
-import { defaultConfig, getImports, Autoloader } from './autoloader'
+import { defaultConfig, getImports } from './autoloader'
 
 describe('autoloader', () => {
   describe('getImports', () => {
     it('returns imports for typeDefs', async() => {
-      const filesOfConventions = getFilesOfConventions('../.testdata', defaultConfig.conventions!.types!, defaultConfig.fileExtensions!)
+      const filesOfConventions = getFilesOfConventions(
+        '../.testdata', 
+        defaultConfig.conventions!.types!, 
+        defaultConfig.fileExtensions!,
+        defaultConfig.exclude!,
+      )
       const imports = await getImports(filesOfConventions)
       expect(imports).toEqual([
         'schema.ts',
@@ -14,7 +19,12 @@ describe('autoloader', () => {
     })
 
     it('returns imports for resolvers', async() => {
-      const filesOfConventions = getFilesOfConventions('../.testdata', defaultConfig.conventions!.resolvers!, defaultConfig.fileExtensions!)
+      const filesOfConventions = getFilesOfConventions(
+        '../.testdata', 
+        defaultConfig.conventions!.resolvers!, 
+        defaultConfig.fileExtensions!,
+        defaultConfig.exclude!
+      )
       const imports = await getImports(filesOfConventions)
       expect(imports).toEqual([
         'subfolder1/queries.ts',
@@ -24,7 +34,12 @@ describe('autoloader', () => {
     })
 
     it('returns imports for datasources', async() => {
-      const filesOfConventions = getFilesOfConventions('../.testdata', defaultConfig.conventions!.datasources!, defaultConfig.fileExtensions!)
+      const filesOfConventions = getFilesOfConventions(
+        '../.testdata', 
+        defaultConfig.conventions!.datasources!, 
+        defaultConfig.fileExtensions!, 
+        defaultConfig.exclude!
+      )
       const imports = await getImports(filesOfConventions)
       expect(imports).toEqual([
         'Datasource.ts',
