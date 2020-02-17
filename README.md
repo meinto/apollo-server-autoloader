@@ -48,6 +48,8 @@ interface AutoloaderConfig {
   conventions?: FileNamingConventions
   // which file extensions should be considered
   fileExtensions?: string[]
+  // which files should be excluded (regex)
+  exclude: string[]
 }
 
 interface FileNamingConventions {
@@ -115,7 +117,8 @@ const config = {
       DatasourceFile: 'MyDatasource',
     }
   },
-  fileExtensions: ['.ts']
+  fileExtensions: ['.ts'],
+  exclude: ['[^\/]+\.(spec|test)', '__tests__'],
 }
 ```
 
