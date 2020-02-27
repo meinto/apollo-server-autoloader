@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc --declaration",
+    "build:clean": "rm -rf ./dist",
+    "build": "npm run build:clean && tsc --declaration",
     "test": "jest",
     "test:watch": "jest --watch"
   },
