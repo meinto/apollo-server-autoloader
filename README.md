@@ -42,8 +42,8 @@ const createServer = async () => {
 
 ```js
 interface AutoloaderConfig {
-  // (required) search path
-  path: string
+  // (required) search paths
+  searchPaths: string[]
   // naming conventions
   conventions?: FileNamingConventions
   // which file extensions should be considered
@@ -104,7 +104,7 @@ In this case the corresponding config for the autoloader should look like follow
 
 ```js
 const config = {
-  path: path.resolve(__dirname, 'api'),
+  searchPaths: [path.resolve(__dirname, 'api')],
   conventions: {
     types: {
       schemaFile: 'myTypeDef',
@@ -128,7 +128,7 @@ The **default config** for the autoloader looks like follows:
 
 ```js
 export const defaultConfig: AutoloaderConfig = {
-  path: '.',
+  searchPaths: ['.'],
   conventions: {
     types: { schema: 'typeDef' },
     resolvers: { queries: 'queries', mutations: 'mutations' },
