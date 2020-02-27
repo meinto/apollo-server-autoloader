@@ -1,0 +1,1 @@
+export const mutations = 'searchFolder2/subfolder1/subfolder2/mutations.js'

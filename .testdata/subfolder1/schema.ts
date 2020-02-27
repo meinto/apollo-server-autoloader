@@ -1,1 +1,0 @@
-export const typeDef = 'subfolder1/schema.ts'

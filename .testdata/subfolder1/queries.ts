@@ -1,1 +1,0 @@
-export const queries = 'subfolder1/queries.ts'

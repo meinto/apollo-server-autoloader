@@ -1,0 +1,1 @@
+export const queries = 'searchFolder2/queries.js'

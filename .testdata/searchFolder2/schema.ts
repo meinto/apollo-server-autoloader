@@ -1,0 +1,1 @@
+export const typeDef = 'searchFolder2/schema.ts'

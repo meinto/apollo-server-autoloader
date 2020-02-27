@@ -3,17 +3,17 @@ import { gql } from 'apollo-server'
 import { DocumentNode } from 'graphql'
 
 import { FileNamingConventions } from './__types__/conventions'
-import { getFilesOfConventions, FilesOfConvention } from './filewalker'
+import { getConventions, FilesOfConvention } from './filewalker'
 
 interface AutoloaderConfig {
-  path: string
+  seachPaths: string[]
   conventions?: FileNamingConventions
   fileExtensions?: string[]
   exclude?: string[],
 }
 
 export const defaultConfig: AutoloaderConfig = {
-  path: '.',
+  seachPaths: ['.'],
   conventions: {
     types: { schema: 'typeDef' },
     resolvers: { queries: 'queries', mutations: 'mutations' },
@@ -32,8 +32,8 @@ export const Autoloader = (config: AutoloaderConfig) => {
   }
 }
 
-const TypeDefLoader = async ({ path, conventions, fileExtensions, exclude }: AutoloaderConfig): Promise<DocumentNode> => {
-  const filesOfConvetion = getFilesOfConventions(path, conventions!.types!, fileExtensions!, exclude!)
+const TypeDefLoader = async ({ seachPaths, conventions, fileExtensions, exclude }: AutoloaderConfig): Promise<DocumentNode> => {
+  const filesOfConvetion = getConventions(seachPaths, conventions!.types!, fileExtensions!, exclude!)
   const typeDefs = await getImports(filesOfConvetion)
   return typeDefs.reduce((curr, next): DocumentNode => gql`
     ${curr}
@@ -41,15 +41,15 @@ const TypeDefLoader = async ({ path, conventions, fileExtensions, exclude }: Aut
   `, '')
 }
 
-const ResolverLoader = async ({ path, conventions, fileExtensions, exclude }: AutoloaderConfig) => {
-  const filesOfConvetion = getFilesOfConventions(path, conventions!.resolvers!, fileExtensions!, exclude!)
+const ResolverLoader = async ({ seachPaths, conventions, fileExtensions, exclude }: AutoloaderConfig) => {
+  const filesOfConvetion = getConventions(seachPaths, conventions!.resolvers!, fileExtensions!, exclude!)
   const resolvers = await getImports(filesOfConvetion)
   return resolvers.reduce((curr, next) => {
     return _.merge(curr, next)
   }, {})
 }
-const DatasourceLoader = async ({ path, conventions, fileExtensions, exclude }: AutoloaderConfig) => {
-  const filesOfConvetion = getFilesOfConventions(path, conventions!.datasources!, fileExtensions!, exclude!)
+const DatasourceLoader = async ({ seachPaths, conventions, fileExtensions, exclude }: AutoloaderConfig) => {
+  const filesOfConvetion = getConventions(seachPaths, conventions!.datasources!, fileExtensions!, exclude!)
   const datasources = await getImports(filesOfConvetion)
   return () => datasources.reduce((curr, next) => {
     return {

@@ -1,0 +1,1 @@
+export const mutations = 'searchFolder1/mutations.ts'

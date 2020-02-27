@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import * as fs from 'fs'
 import * as path from 'path'
 
@@ -12,7 +13,28 @@ export interface FilesOfConvention {
   [key: string]: Matching
 }
 
-export const getFilesOfConventions = (dir: string, searchPatterns: NamingConvention, fileExtensions: string[], exclude: string[]): FilesOfConvention => {
+export const getConventions = (searchPaths: string[], searchPatterns: NamingConvention, fileExtensions: string[], exclude: string[]): FilesOfConvention => {
+  const filesOfConvention: FilesOfConvention = {}
+  searchPaths.forEach(dir => {
+    const conventionsOfDir = getConventionsForPath(dir, searchPatterns, fileExtensions, exclude)
+    Object.keys(conventionsOfDir).forEach(key => {
+      const conventionOfDir = conventionsOfDir[key]
+      const availableConvention = filesOfConvention[key]
+      if (availableConvention) {
+        const availableFiles = availableConvention.files
+        filesOfConvention[key] = {
+          ...conventionOfDir,
+          files: [...availableFiles, ...conventionOfDir.files]
+        }
+      } else {
+        filesOfConvention[key] = conventionOfDir
+      }
+    })
+  })
+  return filesOfConvention
+}
+
+export const getConventionsForPath = (dir: string, searchPatterns: NamingConvention, fileExtensions: string[], exclude: string[]): FilesOfConvention => {
   const filesOfConvention: FilesOfConvention = {}
   const relativeDirPathes = fs.readdirSync(path.resolve(__dirname, dir))
   const fileNamePatterns = Object.keys(searchPatterns)
@@ -33,7 +55,7 @@ export const getFilesOfConventions = (dir: string, searchPatterns: NamingConvent
       }
 
       if (pathStats && pathStats.isDirectory()) {
-        const fileOfSubPath = getFilesOfConventions(absolutePath, searchPatterns, fileExtensions, exclude)[fileNamePattern].files
+        const fileOfSubPath = getConventionsForPath(absolutePath, searchPatterns, fileExtensions, exclude)[fileNamePattern].files
         files = files.concat(fileOfSubPath)
       } else if (!shouldExclude && absolutePath.indexOf(fileNamePattern) > 0) {
         fileExtensions.forEach(ext => {

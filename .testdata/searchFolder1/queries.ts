@@ -1,0 +1,1 @@
+export const queries = 'searchFolder1/queries.ts'

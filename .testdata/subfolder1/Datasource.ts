@@ -1,1 +1,0 @@
-export const Datasource = 'subfolder1/Datasource.ts'

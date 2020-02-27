@@ -1,0 +1,1 @@
+export const typeDef = 'searchFolder2/subfolder1/subfolder2/schema.ts'
