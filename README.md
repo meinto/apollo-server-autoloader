@@ -21,7 +21,7 @@ import { ApolloServer } from '...'
 import { Autoloader } from 'apollo-server-autoloader'
 
 const autoloaderConfig = {
-  path: path.resolve(__dirname, 'api')
+  searchPaths: [path.resolve(__dirname, 'api')]
 }
 
 const createServer = async () => {
