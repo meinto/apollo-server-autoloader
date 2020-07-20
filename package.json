@@ -1,12 +1,12 @@
 {
   "name": "apollo-server-autoloader",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "auto loading schemas, resolvers and datasources",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build:clean": "rm -rf ./dist",
-    "build": "npm run build:clean && tsc --declaration",
+    "build": "yarn run build:clean && tsc --declaration",
     "test": "jest",
     "test:watch": "jest --watch"
   },
@@ -28,15 +28,18 @@
   },
   "homepage": "https://github.com/meinto/apollo-server-autoloader#readme",
   "peerDependencies": {
-    "apollo-server": "^2.9.16",
-    "lodash": "^4.17.15",
-    "graphql": "^14.6.0"
+    "apollo-datasource-rest": "0.x",
+    "apollo-server": "2.x",
+    "graphql": "14.x",
+    "lodash": "4.x"
   },
   "devDependencies": {
     "@types/jest": "^25.1.1",
     "@types/lodash": "^4.14.149",
+    "@types/node": "^13.5.3",
     "@typescript-eslint/eslint-plugin": "^2.18.0",
     "@typescript-eslint/parser": "^2.18.0",
+    "apollo-datasource-rest": "^0.9.3",
     "apollo-server": "^2.9.16",
     "eslint": "^6.8.0",
     "graphql": "^14.6.0",
@@ -45,7 +48,5 @@
     "ts-jest": "^25.1.0",
     "typescript": "^3.7.5"
   },
-  "dependencies": {
-    "@types/node": "^13.5.3"
-  }
+  "dependencies": {}
 }

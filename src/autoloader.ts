@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import { gql } from 'apollo-server'
 import { DocumentNode } from 'graphql'
+import { RESTDataSource } from 'apollo-datasource-rest'
 
 import { FileNamingConventions } from './__types__/conventions'
 import { getConventions, FilesOfConvention } from './filewalker'
@@ -9,6 +10,7 @@ interface AutoloaderConfig {
   searchPaths: string[]
   conventions?: FileNamingConventions
   fileExtensions?: string[]
+  datasourceDecorators?: (new (instance: RESTDataSource) => RESTDataSource)[],
   exclude?: string[],
 }
 
@@ -20,6 +22,7 @@ export const defaultConfig: AutoloaderConfig = {
     datasources: { Datasource: 'Datasource' },
   },
   fileExtensions: ['ts'],
+  datasourceDecorators: [],
   exclude: ['[^\/]+\.(spec|test)', '__tests__'], // eslint-disable-line
 }
 
@@ -48,13 +51,22 @@ const ResolverLoader = async ({ searchPaths, conventions, fileExtensions, exclud
     return _.merge(curr, next)
   }, {})
 }
-const DatasourceLoader = async ({ searchPaths, conventions, fileExtensions, exclude }: AutoloaderConfig) => {
+
+interface Datasource extends RESTDataSource {
+  id: string
+  new(): Datasource
+}
+const DatasourceLoader = async ({ searchPaths, conventions, fileExtensions, exclude, datasourceDecorators }: AutoloaderConfig) => {
   const filesOfConvetion = getConventions(searchPaths, conventions!.datasources!, fileExtensions!, exclude!)
   const datasources = await getImports(filesOfConvetion)
-  return () => datasources.reduce((curr, next) => {
+  return () => datasources.reduce((curr: { [key: string]: Datasource }, NextDatasource: Datasource) => {
+    let datasource = new NextDatasource() as RESTDataSource
+    datasourceDecorators?.forEach((Decorator) => {
+      datasource = new Decorator(datasource)
+    })
     return {
       ...curr,
-      [next.id]: new next(),
+      [NextDatasource.id]: new NextDatasource(),
     }
   }, {})
 }
