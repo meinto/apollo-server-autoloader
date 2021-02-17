@@ -1,12 +1,13 @@
 {
   "name": "apollo-server-autoloader",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "auto loading schemas, resolvers and datasources",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build:clean": "rm -rf ./dist",
     "build": "yarn run build:clean && tsc --declaration",
+    "prepublish": "yarn build",
     "test": "jest",
     "test:watch": "jest --watch"
   },
