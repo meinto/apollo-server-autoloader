@@ -1,6 +1,6 @@
 {
   "name": "apollo-server-autoloader",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "auto loading schemas, resolvers and datasources",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
