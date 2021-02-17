@@ -31,7 +31,7 @@
   "peerDependencies": {
     "apollo-datasource-rest": "0.x",
     "apollo-server": "2.x",
-    "graphql": "14.x",
+    "graphql": "14.x || 15.x",
     "lodash": "4.x"
   },
   "devDependencies": {
