@@ -27,7 +27,8 @@ export const defaultConfig: AutoloaderConfig = {
 }
 
 export const Autoloader = (config: AutoloaderConfig) => {
-  const _config = _.merge(defaultConfig, config)
+  const _defaultConfig = _.cloneDeep(defaultConfig)
+  const _config = _.merge(_defaultConfig, config)
   return {
     getTypeDefs: async () => TypeDefLoader(_config),
     getResolvers: async () => ResolverLoader(_config),
